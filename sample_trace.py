@@ -47,3 +47,23 @@ def generate_traces(num_traces, key_byte, noise_level=0.01, relevant_signal_idx=
     
     return traces, labels
 
+if __name__ == "__main__":
+    # Parameters for trace generation
+    num_traces = 1000  # Number of traces to generate
+    key_byte = 0x2B    # Example key byte
+    noise_level = 0.01  # Noise level in the simulated traces
+    relevant_signal_idx = 5  # Index for the simulated side-channel leakage
+
+    # Generate traces and labels
+    traces, labels = generate_traces(num_traces, key_byte, noise_level, relevant_signal_idx)
+
+    # Example: Print the first few traces and labels
+    print("First 5 generated traces and their corresponding S-box outputs:")
+    for i in range(5):
+        print(f"Trace {i+1}: {traces[i]}, S-box output: {labels[i]}")
+
+    # Optionally: Save the traces and labels to a file
+    np.save('traces.npy', traces)
+    np.save('labels.npy', labels)
+
+

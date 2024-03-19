@@ -74,7 +74,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(128, activation='relu', input_shape=(trace_length,)),
     tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(256, activation='softmax') # Assuming 8-bit S-box
+    tf.keras.layers.Dense(256, activation='softmax') # 8-bit S-box
 ])
 # -------------------------------------------------------------------------------------------------------------------------------
 # Compile the model
@@ -101,10 +101,10 @@ X_attack, y_attack, plaintexts_attack, keys_attack = generate_traces(num_attack,
 # Predict on the attack traces
 predictions = model.predict(X_attack)
 
-# Evaluate model's performance (modify according to your criteria)
+# Evaluate model's performance
 predicted_classes = np.argmax(predictions, axis=1)
 accuracy = np.mean(predicted_classes == y_attack)
 print("Accuracy on attack set:", accuracy)
 
-# Further analysis of predictions to deduce secret key can be added here
+
 

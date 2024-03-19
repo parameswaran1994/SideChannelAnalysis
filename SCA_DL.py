@@ -3,7 +3,7 @@ import tensorflow as tf
 import random as python_random
 from sklearn.model_selection import train_test_split
 
-
+# -------------------------------------------------------------------------------------------------------------------------------
 # Set seed for reproducibility
 def reset_random_seeds(seed_value=42):
     python_random.seed(seed_value)
@@ -11,6 +11,8 @@ def reset_random_seeds(seed_value=42):
     tf.random.set_seed(seed_value)
 
 reset_random_seeds()
+
+# -------------------------------------------------------------------------------------------------------------------------------
 
 # Define the AES S-box
 AES_Sbox = [
@@ -36,6 +38,14 @@ AES_Sbox = [
 def Sbox(input_byte):
     return AES_Sbox[input_byte]
 
+# -------------------------------------------------------------------------------------------------------------------------------
+# Profiling Acquisition Phase
+# num_traces is the number of synthetic power traces to generate.
+# trace_length is the number of samples in each trace.
+# noise_std is the standard deviation of the Gaussian noise added to the traces, simulating the measurement noise in real trace acquisition.
+# plaintexts and keys are arrays of random values representing the inputs and keys used in AES operations.
+# sbox_outputs represent the intermediate values obtained after applying the S-box operation, simulating an important step in the AES algorithm.
+    
 # Function to generate synthetic traces
 def generate_traces(num_traces, trace_length, noise_std=0.01):
     plaintexts = np.random.randint(0, 256, size=num_traces, dtype=np.uint8)
@@ -46,6 +56,11 @@ def generate_traces(num_traces, trace_length, noise_std=0.01):
     relevant_index = np.random.randint(0, trace_length)
     traces[np.arange(num_traces), relevant_index] = sbox_outputs
     return traces, sbox_outputs, plaintexts, keys
+# -------------------------------------------------------------------------------------------------------------------------------
+# Profiling Phase
+# Synthetic traces and corresponding S-box outputs (X and y) are generated and split into training and validation datasets.
+# A neural network model is defined, compiled, and trained using the training dataset.
+# The history object contains information about the training process, which can be analyzed to understand the model's learning progression.
 
 # Generate training and validation traces
 num_training = 10000
@@ -53,6 +68,7 @@ trace_length = 20
 X, y, _, _ = generate_traces(num_training, trace_length)
 X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
 
+# -------------------------------------------------------------------------------------------------------------------------------
 # Define the model
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(128, activation='relu', input_shape=(trace_length,)),
@@ -60,19 +76,28 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(256, activation='softmax') # Assuming 8-bit S-box
 ])
-
+# -------------------------------------------------------------------------------------------------------------------------------
 # Compile the model
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
-
+# -------------------------------------------------------------------------------------------------------------------------------
 # Train the model
 history = model.fit(X_train, y_train, epochs=50, validation_data=(X_val, y_val))
+
+
+# -------------------------------------------------------------------------------------------------------------------------------
+# Attack Acquistion Phase
+# Here, new synthetic traces (X_attack, y_attack) are generated, mimicking a real-world scenario where the attacker would collect new measurements from the target device.
 
 # Generate attack traces
 num_attack = 1000
 X_attack, y_attack, plaintexts_attack, keys_attack = generate_traces(num_attack, trace_length)
 
+# -------------------------------------------------------------------------------------------------------------------------------
+
+# Predictions Phase
+# The model predicts the intermediate values based on the attack traces. These predictions are compared to the actual values to evaluate the model's performance.
 # Predict on the attack traces
 predictions = model.predict(X_attack)
 

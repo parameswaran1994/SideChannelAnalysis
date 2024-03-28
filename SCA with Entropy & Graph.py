@@ -32,10 +32,18 @@ AES_Sbox = [
     0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
     0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16
 ]
-# The S-box array should be here as in your original script
+
 
 def Sbox(input_byte):
     return AES_Sbox[input_byte]
+
+# -------------------------------------------------------------------------------------------------------------------------------
+# Profiling Acquisition Phase
+# num_traces is the number of synthetic power traces to generate.
+# trace_length is the number of samples in each trace.
+# noise_std is the standard deviation of the Gaussian noise added to the traces, simulating the measurement noise in real trace acquisition.
+# plaintexts and keys are arrays of random values representing the inputs and keys used in AES operations.
+# sbox_outputs represent the intermediate values obtained after applying the S-box operation, simulating an important step in the AES algorithm.
 
 # Function to generate synthetic traces
 def generate_traces(num_traces, trace_length, noise_std=0.01):
@@ -46,6 +54,11 @@ def generate_traces(num_traces, trace_length, noise_std=0.01):
     relevant_index = np.random.randint(0, trace_length)
     traces[np.arange(num_traces), relevant_index] = sbox_outputs
     return traces, sbox_outputs, plaintexts, keys
+# -------------------------------------------------------------------------------------------------------------------------------
+# Profiling Phase
+# Synthetic traces and corresponding S-box outputs (X and y) are generated and split into training and validation datasets.
+# A neural network model is defined, compiled, and trained using the training dataset.
+# The history object contains information about the training process, which can be analyzed to understand the model's learning progression.
 
 # Generate training and validation traces
 num_training = 10000
@@ -68,11 +81,16 @@ model.compile(optimizer='adam',
 
 # Train the model
 history = model.fit(X_train, y_train, epochs=50, validation_data=(X_val, y_val))
+# -------------------------------------------------------------------------------------------------------------------------------
+# Attack Acquistion Phase
+# Here, new synthetic traces (X_attack, y_attack) are generated, mimicking a real-world scenario where the attacker would collect new measurements from the target device.
 
 # Generate attack traces
 num_attack = 1000
 X_attack, y_attack, plaintexts_attack, keys_attack = generate_traces(num_attack, trace_length)
 
+# Predict on the attack traces
+# The model predicts the intermediate values based on the attack traces. These predictions are compared to the actual values to evaluate the model's performance.
 # Predict on the attack traces
 predictions = model.predict(X_attack)
 

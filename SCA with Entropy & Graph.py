@@ -86,6 +86,7 @@ history = model.fit(X_train, y_train, epochs=50, validation_data=(X_val, y_val))
 # Here, new synthetic traces (X_attack, y_attack) are generated, mimicking a real-world scenario where the attacker would collect new measurements from the target device.
 
 # Generate attack traces
+# Generates a new set of synthetic traces for attacking and uses the trained model to predict the AES S-box outputs from these traces.
 num_attack = 1000
 X_attack, y_attack, plaintexts_attack, keys_attack = generate_traces(num_attack, trace_length)
 
@@ -100,6 +101,8 @@ accuracy = np.mean(predicted_classes == y_attack)
 print("Accuracy on attack set:", accuracy)
 
 # Calculate Guessing Entropy
+# Calculates the guessing entropy for an increasing number of attack traces and plots the guessing entropy over time.
+# Guessing entropy is a measure of the uncertainty in key guesses. By analyzing how guessing entropy decreases as more traces are used, attackers can assess the efficiency of their SCA attack. Lower guessing entropy implies a higher likelihood of recovering the correct key with fewer traces.
 def calculate_guessing_entropy(predictions, true_values, num_keys=256):
     guessing_entropy = np.zeros(predictions.shape[0])
     for i in range(predictions.shape[0]):

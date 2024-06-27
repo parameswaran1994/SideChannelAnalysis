@@ -1,0 +1,232 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Side Channel Attack Using AI}
+\subtitle{From Understanding to Implementation}
+\author{Parameswaran}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Introduction to Side Channel Analysis}
+    \begin{itemize}
+        \item \textbf{Definition:} Side Channel Analysis (SCA) is a technique used to extract cryptographic keys and other sensitive information by analyzing physical effects such as power consumption, electromagnetic emissions, and timing information.
+        \item \textbf{Importance:} Understanding and mitigating SCAs is crucial for ensuring the security of cryptographic systems.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{What is a Side Channel Attack?}
+    \begin{itemize}
+        \item \textbf{Definition:} A side-channel attack exploits the physical implementation of a cryptographic system rather than theoretical weaknesses in the algorithms themselves.
+        \item \textbf{Types of Attacks:}
+        \begin{itemize}
+            \item Power Analysis: Monitors power consumption patterns during cryptographic operations.
+            \item Electromagnetic Analysis: Captures EM emissions to deduce processed data.
+            \item Timing Analysis: Measures time taken for operations to infer secrets.
+            \item Acoustic Analysis: Uses sound emitted by electronic components to extract data.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{AI in Side Channel Attacks}
+    \begin{itemize}
+        \item \textbf{Definition of AI:} AI involves the simulation of human intelligence in machines that are programmed to think and learn.
+        \item \textbf{Application in SCA:} AI techniques enhance the execution of side-channel attacks by leveraging machine learning models to analyze side-channel data and identify patterns indicative of cryptographic keys.
+        \item \textbf{Key AI Techniques Used:}
+        \begin{itemize}
+            \item Machine Learning: Utilizes algorithms to find patterns in data.
+            \item Deep Learning: Employs neural networks with multiple layers for feature extraction and classification.
+            \item Convolutional Neural Networks (CNNs): Effective for spatial data analysis, suitable for power traces.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{CNN TensorFlow Model Script Overview}
+    \begin{itemize}
+        \item \textbf{Purpose:} The CNN TensorFlow model script is designed to perform Correlation Power Analysis (CPA) on cryptographic implementations.
+        \item \textbf{Key Steps in the Script:}
+        \begin{enumerate}
+            \item Import Libraries and Setup Environment: Ensures all dependencies are available.
+            \item Define AES S-box and Utility Functions: Essential for cryptographic operations and analysis.
+            \item Load and Preprocess Data: Prepare side-channel data for analysis.
+            \item Define CNN Model Architecture: Design the neural network for classification.
+            \item Train and Evaluate the Model: Train the CNN and evaluate its performance.
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Detailed Breakdown of CNN TensorFlow Model Script}
+    \begin{itemize}
+        \item \textbf{1. Import Libraries and Setup Environment:}
+        \begin{itemize}
+            \item Libraries: numpy, tensorflow, and other necessary libraries.
+            \item Environment Setup: Define a function to reset random seeds for reproducibility.
+        \end{itemize}
+        \item \textbf{2. Define AES S-box and Utility Functions:}
+        \begin{itemize}
+            \item AES S-box: Used for substitution in the AES algorithm.
+            \item Utility Functions: Functions for S-box substitution and Hamming weight calculation.
+        \end{itemize}
+        \item \textbf{3. Load and Preprocess Data:}
+        \begin{itemize}
+            \item Data Loading: Load side-channel data.
+            \item Data Preprocessing: Normalize and reshape data for input into the CNN.
+        \end{itemize}
+        \item \textbf{4. Define CNN Model Architecture:}
+        \begin{itemize}
+            \item Layers: Convolutional layers, batch normalization, max pooling, and dense layers.
+            \item Model Compilation: Compile the model with appropriate loss function and optimizer.
+        \end{itemize}
+        \item \textbf{5. Train and Evaluate the Model:}
+        \begin{itemize}
+            \item Training: Train the model on the training dataset.
+            \item Evaluation: Evaluate the model's performance on the test dataset.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Profiling Attacks and Their Evaluation}
+    \begin{itemize}
+        \item \textbf{Definition:} Profiling attacks involve a two-phase process where the attacker builds a model during the profiling phase and uses it in the attack phase.
+        \item \textbf{Steps in Profiling Attacks:}
+        \begin{enumerate}
+            \item Profiling Acquisition: Collect profiling traces from a prototype device.
+            \item Profiling Phase: Build a model that returns a set of scores for each hypothetical value of the secret.
+            \item Attack Acquisition: Collect attack traces from the target device.
+            \item Predictions: Use the model to compute prediction vectors for each attack trace.
+            \item Guessing: Combine scores to predict the secret key.
+        \end{enumerate}
+        \item \textbf{Evaluation Metrics:}
+        \begin{itemize}
+            \item Guessing Entropy (GE): Average rank of the correct key.
+            \item Success Rate (SR): Probability that the correct key is ranked first.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Correlation Power Analysis (CPA) with a Leakage Model}
+    \begin{itemize}
+        \item \textbf{Definition:} CPA is an advanced form of side-channel analysis that uses statistical techniques to correlate power consumption measurements with hypothetical power models.
+        \item \textbf{Key Concepts:}
+        \begin{itemize}
+            \item Hamming Distance Model: Measures power consumption based on bit transitions.
+            \item Correlation Factor: Quantifies the relationship between power consumption and the Hamming distance.
+            \item Leakage Model: Helps in identifying the data-dependent part of power consumption.
+        \end{itemize}
+        \item \textbf{Steps in CPA:}
+        \begin{enumerate}
+            \item Measure power consumption during cryptographic operations.
+            \item Compute hypothetical power consumption using the leakage model.
+            \item Correlate measured and hypothetical power values to recover the key.
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{OCCPOI Framework}
+    \begin{itemize}
+        \item \textbf{Definition:} OCCPOI (Occupancy Prediction) is a framework for predicting occupancy using probabilistic models and sensor data.
+        \item \textbf{Key Concepts:}
+        \begin{itemize}
+            \item Probabilistic Models: Handle uncertainty in predictions.
+            \item Sensor Data Integration: Combines multiple sources of data for accurate predictions.
+        \end{itemize}
+        \item \textbf{Relevance to SCA:} The probabilistic approach and sensor integration can enhance side-channel data analysis by improving the accuracy of predictions and handling noise effectively.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Rate Distortion Framework}
+    \begin{itemize}
+        \item \textbf{Definition:} The Rate Distortion Explanation (RDE) framework is a method for explaining black-box model decisions by leveraging perturbations and aiming for minimal distortion.
+        \item \textbf{Key Concepts:}
+        \begin{itemize}
+            \item Perturbations of Input Signals: Introduce controlled changes to understand model behavior.
+            \item Optimization of Sparse Masks: Identify critical features with minimal changes.
+        \end{itemize}
+        \item \textbf{Relevance to SCA:} RDE's approach to perturbations and sparse feature identification can be adapted for side-channel analysis to identify key features in power traces.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Rate Distortion Framework: Detailed Explanation}
+    \begin{itemize}
+        \item \textbf{Purpose:} Quantifies the trade-off between the accuracy of data representation and the amount of distortion or noise introduced.
+        \item \textbf{Key Concepts:} 
+        \begin{itemize}
+            \item Rate-Distortion Function: Defines the minimum rate at which information can be encoded for a given level of distortion.
+            \item Distortion Measures: Quantify the difference between the original and distorted data.
+            \item Rate-Distortion Theory: Provides a theoretical foundation for data compression and information theory.
+        \end{itemize}
+        \item \textbf{Applications in SCA:}
+        \begin{itemize}
+            \item Leakage Modeling: Use RDF to model the trade-off between the amount of information leaked and the level of noise added to protect the data.
+            \item Countermeasure Evaluation: Assess the effectiveness of different countermeasures by evaluating their impact on the rate-distortion function.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Applying Rate Distortion Framework in SCA}
+    \begin{itemize}
+        \item \textbf{Steps in Applying RDF:}
+        \begin{enumerate}
+            \item Define the distortion measure suitable for the specific SCA context.
+            \item Determine the rate-distortion function for the given distortion measure.
+            \item Analyze the trade-offs between information leakage and noise introduction.
+        \end{enumerate}
+        \item \textbf{Example:} In SCA, RDF can be used to quantify how much noise needs to be added to power traces to make it infeasible for an attacker to recover the cryptographic key while maintaining a balance with system performance.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Practical Considerations in RDF}
+    \begin{itemize}
+        \item \textbf{Challenges:} Determining appropriate distortion measures, accurately modeling the rate-distortion function, and balancing security and performance.
+        \item \textbf{Solutions:} Advanced modeling techniques, empirical analysis, and iterative testing.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Case Study: RDF in Side-Channel Analysis}
+    \begin{itemize}
+        \item \textbf{Scenario:} Application of RDF to evaluate noise addition as a countermeasure against power analysis attacks.
+        \item \textbf{Methodology:} 
+        \begin{itemize}
+            \item Measure power traces.
+            \item Add controlled noise.
+            \item Evaluate the impact on key recovery success rate.
+        \end{itemize}
+        \item \textbf{Results:} Demonstrates the effectiveness of RDF in improving security.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Key Learnings and Future Exploration Areas}
+    \begin{itemize}
+        \item \textbf{Key Learnings:}
+        \begin{itemize}
+            \item Understanding of side-channel attacks and their execution using AI techniques.
+            \item Application of CNNs for analyzing side-channel data.
+            \item Importance of probabilistic models and perturbation frameworks.
+        \end{itemize}
+        \item \textbf{Future Exploration Areas:}
+        \begin{itemize}
+            \item Advanced Signal Processing Techniques
+            \item Data Augmentation
+            \item Transfer Learning
+            \item Hybrid Models Combining CNNs and RNNs
+            \item Explainable AI Techniques
+            \item Generative Models for Synthetic Trace Generation
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{New Ideas for Side Channel Attacks Using AI}
+    \begin{itemize}
+        \item Advanced Signal Processing: Utilize advanced signal processing techniques to enhance the quality of side-channel data.
+        \item Data Augmentation: Introduce variations in side-channel traces by adding controlled noise or perturbations.
+        \item Transfer Learning: Use pre-trained models from similar domains and fine-tune them on side-channel data.
+        \item Hybrid Models: Combine CNNs with RNNs to capture both spatial and temporal features.
+        \item Explainable AI: Implement techniques to interpret model decisions and identify critical features.
+        \item Generative Models: Use GANs to generate synthetic traces for training robust models.
+    \end{itemize}
+\end{frame}
+
+\end{document}
